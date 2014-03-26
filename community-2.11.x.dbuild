@@ -7,6 +7,7 @@
 
 vars.base: {
   extra.options += "-XX:MaxPermSize=768m"
+  extra.options += "-XX:+PrintFlagsFinal"
 }
 include file("common-2.11.x.conf")
 
