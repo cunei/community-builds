@@ -23,6 +23,7 @@ jvm_props=""
 local_mode="false"
 notify="false"
 dbuild_args=""
+skip_git="false"
 
 Usage(){
     ex=$1
@@ -57,7 +58,7 @@ If no Scala version is specified, we use whatever's hardcoded in run.sh.
 }
 
 
-while getopts c:dD:f:hlnp:r:s:v: c; do
+while getopts c:dD:f:hlnsp:r:v: c; do
   case $c in
     c) config_dir="$OPTARG"
        dbuild_file="$config_dir/community.dbuild"
@@ -80,6 +81,8 @@ while getopts c:dD:f:hlnp:r:s:v: c; do
     p) project_refs_conf="$OPTARG"
        ;;
     r) resolvers_file="$OPTARG"
+       ;;
+    s) skip_git="true"
        ;;
     v) scala_version="$OPTARG"
        ;;
@@ -125,7 +128,7 @@ fi
 cat $project_refs_conf > .dbuild/project-refs.conf
 
 # Set dbuild version and config file
-DBUILDVERSION=0.9.16
+DBUILDVERSION=0.9.17-toni4
 echo "dbuild version: $DBUILDVERSION"
 
 DBUILDCONFIG=$dbuild_file
@@ -159,6 +162,10 @@ fi
 
 if [ -n "$jvm_props" ];then
   dbuild_args="$dbuild_args -Dkey=\"$jvm_props\""
+fi
+
+if [ "$skip_git" = "true" ];then
+  dbuild_args="$dbuild_args -s"
 fi
 
 if [ "$local_mode" = "true" ];then
