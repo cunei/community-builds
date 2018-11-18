@@ -96,13 +96,21 @@ vars.base.deps.inject: ["com.lightbend#cloc-plugin"]
 // the effect on disk space usage is, starting March 17 2018
 options.cleanup: {
   extraction: {
-    success: 336
-    failure: 336
+    success: -1
+    failure: 0
   }
   build: {
-    success: 336
-    failure: 336
+    success: -1
+    failure: 0
   }
+}
+
+options.timeouts: {
+   "build" : "5 hours",
+   "build-phase" : "16 hours",
+   "dbuild" : "60 hours",
+   "extraction" : "1 hour",
+   "extraction-phase" : "6 hours"
 }
 
 //// Scala itself
@@ -1432,6 +1440,7 @@ build += {
   ${vars.base} {
     name: "coursier"
     uri:  ${vars.uris.coursier-uri}
+    git-full-clone: true
     extra.sbt-version: ${vars.sbt-1-version}
     // no Scala.js or Scala Native plz
     extra.projects: ["jvm"]
@@ -1599,6 +1608,7 @@ build += {
   ${vars.base} {
     name: "fast-string-interpolator"
     uri:  ${vars.uris.fast-string-interpolator-uri}
+    git-full-clone: true
     extra.sbt-version: ${vars.sbt-1-version}
     extra.options: ["-Dbintray.user=dummy", "-Dbintray.pass=dummy"]
     extra.commands: ${vars.default-commands} [
@@ -1751,6 +1761,7 @@ build += {
   ${vars.base} {
     name: "scalameta"
     uri:  ${vars.uris.scalameta-uri}
+    git-full-clone: true
     // allow building on JDK 11
     extra.options: ["-Dscalameta.allow-any-jdk"]
     extra.projects: [
@@ -1772,6 +1783,7 @@ build += {
   ${vars.base} {
     name: "jsoniter-scala"
     uri:  ${vars.uris.jsoniter-scala-uri}
+    git-full-clone: true
     extra.sbt-version: ${vars.sbt-1-version}
     extra.exclude: ["jsoniter-scala-benchmark"]
   }
